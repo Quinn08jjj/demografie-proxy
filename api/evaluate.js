@@ -29,7 +29,7 @@ export default async function handler(req, res) {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-3-5-sonnet-20241022',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 600,
         system: systemPrompt,
         messages: [{ role: 'user', content: userMessage }],
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
     const data = await apiRes.json();
 
     if (!apiRes.ok) {
-      return res.status(200).json({ 
+      return res.status(200).json({
         _debugError: true,
         anthropicStatus: apiRes.status,
         anthropicResponse: data,
@@ -51,7 +51,7 @@ export default async function handler(req, res) {
     return res.status(200).json(data);
 
   } catch (error) {
-    return res.status(200).json({ 
+    return res.status(200).json({
       _debugError: true,
       catchError: error.message,
       stack: error.stack

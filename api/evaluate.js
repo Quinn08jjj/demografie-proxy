@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     const { systemPrompt, userMessage } = body;
 
     if (!systemPrompt || !userMessage) {
-      return res.status(400).json({ error: 'Missing fields', got: { systemPrompt: !!systemPrompt, userMessage: !!userMessage } });
+      return res.status(400).json({ error: 'Missing fields' });
     }
 
     const apiRes = await fetch('https://api.anthropic.com/v1/messages', {
@@ -39,12 +39,22 @@ export default async function handler(req, res) {
     const data = await apiRes.json();
 
     if (!apiRes.ok) {
-      return res.status(apiRes.status).json({ error: 'Anthropic error', details: data });
+      return res.status(200).json({ 
+        _debugError: true,
+        anthropicStatus: apiRes.status,
+        anthropicResponse: data,
+        keyExists: !!process.env.ANTHROPIC_API_KEY,
+        keyPrefix: process.env.ANTHROPIC_API_KEY ? process.env.ANTHROPIC_API_KEY.substring(0, 15) : 'MISSING'
+      });
     }
 
     return res.status(200).json(data);
 
   } catch (error) {
-    return res.status(500).json({ error: 'Server error', message: error.message, stack: error.stack });
+    return res.status(200).json({ 
+      _debugError: true,
+      catchError: error.message,
+      stack: error.stack
+    });
   }
 }

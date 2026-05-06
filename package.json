@@ -1,9 +1,0 @@
-{
-  "name": "demografie-proxy",
-  "version": "1.0.0",
-  "description": "Proxy server for Demografie learning app",
-  "main": "api/evaluate.js",
-  "engines": {
-    "node": ">=18"
-  }
-}
